@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 			linenumber++;
 			strncpy(cmd, linecmd, cmd_length);
 			cmd[cmd_length] = '\0';
-			instructions = malloc(sizeof(instruction_t) * 3);
+			instructions = malloc(sizeof(instruction_t) * 4);
 			if (instructions == NULL)
 			{
 				fprintf(stderr, "Error: malloc failed\n");
@@ -57,8 +57,10 @@ int main(int argc, char *argv[])
 			instructions[0].f = push;
 			instructions[1].opcode = "pall";
 			instructions[1].f = pall;
-			instructions[2].opcode = NULL;
-			instructions[2].f = NULL;
+			instructions[2].opcode = "pint";
+			instructions[2].f = pint;
+			instructions[3].opcode = NULL;
+			instructions[3].f = NULL;
 
 			while (instructions[i].opcode != NULL)
 			{
@@ -79,6 +81,8 @@ int main(int argc, char *argv[])
 				exit(EXIT_FAILURE);
 			}
 			free(cmd);
+			i = 0;
+			/*free(instructions); */
 		}
 	}
 	fclose(file);

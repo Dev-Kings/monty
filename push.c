@@ -22,17 +22,17 @@ void push(stack_t **stack, unsigned int line_number)
 		fprintf(stderr, "Malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
+	new-> n = num;
+	new->next = NULL;
+
 	if (head == NULL)
 	{
-		new->n = num;
 		new->prev = NULL;
-		new->next = NULL;
 	}
 	else
 	{
-		new->n = num;
 		new->prev = head;
-		new->next = NULL;
 	}
+	
 	*stack = new;
 }
