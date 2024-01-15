@@ -11,11 +11,13 @@ void push(stack_t **stack, unsigned int line_number)
 	stack_t *new, *head;
 
 	head = *stack;
-	if (sscanf(cmd, "push %d", &num) != 1)
+
+	if (!is_integer(cmd))
 	{
-		fprintf(stderr, "L%u: usage: push integer\n", line_number);
+		fprintf(stderr, "L%u:R usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
+	num = atoi(cmd + 5);
 	new = malloc(sizeof(stack_t));
 	if (new == NULL)
 	{

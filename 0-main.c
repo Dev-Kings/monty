@@ -14,10 +14,9 @@ int main(int argc, char *argv[])
 	int linenumber = 0;
 	FILE *file;
 	char linecmd[50];
-	/* char *cmd; */
 	size_t cmd_length;
 	stack_t *stack = NULL;
-	char cmdfunction[4];
+	char *cmdfunction = NULL;
 	instruction_t *instructions;
 
 	file = fopen((char *)argv[1], "r");
@@ -46,7 +45,7 @@ int main(int argc, char *argv[])
 			linenumber++;
 			strncpy(cmd, linecmd, cmd_length);
 			cmd[cmd_length] = '\0';
-			instructions = malloc(sizeof(instruction_t) * 4);
+			instructions = malloc(sizeof(instruction_t) * 5);
 			if (instructions == NULL)
 			{
 				fprintf(stderr, "Error: malloc failed\n");
@@ -59,18 +58,29 @@ int main(int argc, char *argv[])
 			instructions[1].f = pall;
 			instructions[2].opcode = "pint";
 			instructions[2].f = pint;
-			instructions[3].opcode = NULL;
-			instructions[3].f = NULL;
+			instructions[3].opcode = "pop";
+			instructions[3].f = pop;
+			instructions[4].opcode = NULL;
+			instructions[4].f = NULL;
 
 			while (instructions[i].opcode != NULL)
 			{
-				strncpy(cmdfunction, cmd, 4);
-				cmdfunction[4] = '\0';
+				cmdfunction = malloc(strlen(instructions[i].opcode) + 1);
+				if (cmdfunction == NULL)
+				{
+					fprintf(stderr, "Error: malloc failed\n");
+					exit(EXIT_FAILURE);
+				}
+
+				strncpy(cmdfunction, cmd, strlen(instructions[i].opcode));
+				cmdfunction[strlen(instructions[i].opcode)] = '\0';
 				if (strcmp(cmdfunction, instructions[i].opcode) == 0)
 				{
 					instructions[i].f(&stack, linenumber);
+					free(cmdfunction);
 					break;
 				}
+				free(cmdfunction);
 				i++;
 			}
 
