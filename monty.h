@@ -1,12 +1,19 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
-extern char *cmd;
+typedef enum
+{
+	STACK,
+	QUEUE
+} data_format;
+
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -38,10 +45,33 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-void push(stack_t **stack, unsigned int line_number);
-void pall(stack_t **stack, unsigned int line_number);
-void pint(stack_t **stack, unsigned int line_number);
-void pop(stack_t **stack, unsigned int line_number);
-int is_integer(const char *str);
+void push_op(stack_t **stack, unsigned int line_number);
+void pall_op(stack_t **stack, unsigned int line_number);
+void pint_op(stack_t **stack, unsigned int line_number);
+void pop_op(stack_t **stack, unsigned int line_number);
+void swap_op(stack_t **stack, unsigned int line_number);
+void add_op(stack_t **stack, unsigned int line_number);
+void sub_op(stack_t **stack, unsigned int line_number);
+void div_op(stack_t **stack, unsigned int line_number);
+void mul_op(stack_t **stack, unsigned int line_number);
+void mod_op(stack_t **stack, unsigned int line_number);
+void pchar_op(stack_t **stack, unsigned int line_number);
+void pstr_op(stack_t **stack, unsigned int line_number);
+void rotl_op(stack_t **stack, unsigned int line_number);
+void rotr_op(stack_t **stack, unsigned int line_number);
+void nop_op(stack_t **stack, unsigned int line_number);
+void stack_op(stack_t **stack, unsigned int line_number);
+void queue_op(stack_t **stack, unsigned int line_number);
+
+
+instruction_t get_opcode(char *opcode);
+void execute_opcodes(char *opcode, stack_t **stack, unsigned int line_number);
+void strip_whitespace(char **line);
+void strip_trailing_whitespace(char *line);
+void remove_dollar_sign(char *line);
+void process_line(stack_t **stack, data_format format, char *line,
+		unsigned int line_number);
+void read_and_process_file(const char *filename);
+extern instruction_t opcodes[];
 
 #endif /* MONTY_H */
